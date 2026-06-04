@@ -125,8 +125,8 @@
 
     <div id="loader">
         <canvas id="intro-stars"></canvas>
-        <h1 id="loader-text">Загружаю самые важные слова…</h1>
-        <p>Если анимация застыла или не обновляется фон, включите VPN 🛡</p>
+        <h1 id="loader-text">загружаю важные слова…</h1>
+        <p>если анимация застыла или не обновляется фон, включи VPN 🛡</p>
     </div>
 
     <div id="tsparticles"></div>
@@ -143,25 +143,25 @@
 
     <div id="page1" class="page active">
         <div class="card" id="main-confession-card">
-            <h1 id="p1-title">Мне нужно сказать тебе кое-что важное ❤️</h1>
-            <p class="subtitle" id="p1-sub">Каждый день рядом с тобой становится лучше, и я больше не хочу скрывать свои чувства.</p>
+            <h1 id="p1-title">мне нужно сказать тебе кое-что важное... </h1>
+            <p class="subtitle" id="p1-sub">каждый день рядом с тобой становится лучше, и я больше не могу скрывать... .</p>
             
             <div id="p1-main-text" style="display:none;">
-                <p class="subtitle" style="font-size:1.1rem; margin-bottom:2rem;">Ты очень особенный человек для меня. Мне нравится твоя улыбка, твой характер, наши разговоры и время, проведённое вместе. Поэтому я хочу задать тебе один вопрос...</p>
-                <h1 style="font-size:2rem; margin-bottom:2rem;">Ты будешь моей девушкой? ❤️</h1>
+                <p class="subtitle" style="font-size:1.1rem; margin-bottom:2rem;">ты очень особенный человек для меня. мне нравится все в тебе, твой характер, наши разговоры и время, проведённое вместе, поэтому я хочу задать тебе один вопрос...</p>
+                <h1 style="font-size:2rem; margin-bottom:2rem;">ты будешь моей девушкой? 🤍</h1>
                 <div style="display:inline-block; position:relative; width:100%; min-height:80px; margin-top:10px;">
-                    <button class="btn-main" onclick="handleYes()">Да ❤️</button>
-                    <button class="btn-main" id="no-btn">Нет 🙈</button>
+                    <button class="btn-main" onclick="handleYes()">да 🤍</button>
+                    <button class="btn-main" id="no-btn">нет 🙈</button>
                 </div>
             </div>
-            <span class="vpn-hint">Если анимации или фон работают нестабильно — активируйте VPN.</span>
+            <span class="vpn-hint">если анимации или фон работают нестабильно — включи VPN.</span>
         </div>
     </div>
 
     <div id="page2" class="page">
         <div class="card">
-            <h1>Тогда позволь пригласить тебя на свидание ❤️</h1>
-            <p class="subtitle" style="margin-bottom:1.5rem;">Выбери удобный вариант, а всё остальное я организую.</p>
+            <h1>тогда позволь пригласить тебя на прогулку 🤍</h1>
+            <p class="subtitle" style="margin-bottom:1.5rem;">выбери удобный вариант, а всё остальное я организую.</p>
             
             <div class="datetime-container">
                 <input type="date" id="target-date" class="input-premium">
@@ -169,27 +169,27 @@
             </div>
 
             <div class="grid" id="options-holder"></div>
-            <button class="btn-main" style="width:100%; margin:10px 0 0 0;" onclick="submitDate()">Подтвердить свидание ❤️</button>
+            <button class="btn-main" style="width:100%; margin:10px 0 0 0;" onclick="submitDate()">подтвердить 🤍</button>
         </div>
     </div>
 
     <div id="page3" class="page">
         <div class="card">
-            <h1 id="f-line1" style="opacity:0;">Спасибо ❤️</h1>
+            <h1 id="f-line1" style="opacity:0;">спасибо 🤍</h1>
             <p class="subtitle" id="f-line2" style="opacity:0; margin-bottom:1.2rem;"></p>
             <p class="subtitle" id="f-line3" style="opacity:0; margin-bottom:1.5rem;"></p>
-            <h1 id="f-line4" style="opacity:0; font-size:2.8rem; color:var(--accent); text-shadow: 0 0 20px rgba(255,133,162,0.4);">Я тебя люблю ❤️</h1>
-            <button class="btn-main" id="gift-btn" style="display:none; width:100%; margin-top:25px;">Открыть сюрприз 🎁</button>
+            <h1 id="f-line4" style="opacity:0; font-size:2.8rem; color:var(--accent); text-shadow: 0 0 20px rgba(255,133,162,0.4);">🤍</h1>
+            <button class="btn-main" id="gift-btn" style="display:none; width:100%; margin-top:25px;"открыть сюрприз 🎁</button>
         </div>
     </div>
 
     <div id="page4" class="page" style="height:auto; min-height:100vh;">
         <h1 style="text-align:center; color:#1d1d1f; margin-bottom:5px;">Наше пространство ✨</h1>
-        <p class="subtitle" style="text-align:center; margin-bottom:30px; font-size:1rem; color:#86868b;">Нажимай на пустые зоны экрана, чтобы оставлять милые слова</p>
+        <p class="subtitle" style="text-align:center; margin-bottom:30px; font-size:1rem; color:#86868b;"> нажимай на пустые зоны экрана, чтобы открывать посхалки</p>
         
         <div class="dashboard">
             <div class="tile">
-                <div class="timer-title">Мы знакомы уже</div>
+                <div class="timer-title">мы знакомы уже</div>
                 <div class="timer-display">
                     <div class="time-unit"><span class="time-num" id="t-days">00</span><span class="time-lbl">Дней</span></div>
                     <div class="time-unit"><span class="time-num" id="t-hours">00</span><span class="time-lbl">Часов</span></div>
@@ -198,7 +198,7 @@
             </div>
 
             <div class="tile">
-                <div class="timer-title" style="margin-bottom:25px;">Записки для тебя</div>
+                <div class="timer-title" style="margin-bottom:25px;">записки для тебя</div>
                 <div class="letters-container">
                     <div class="envelope" onclick="openLetter(0)">💌</div>
                     <div class="envelope" onclick="openLetter(1)">💌</div>
@@ -207,7 +207,7 @@
             </div>
 
             <div class="tile" id="wheel-tile" style="display:none;">
-                <div class="timer-title">Колесо выбора прогулки</div>
+                <div class="timer-title">колесо выбора прогулки</div>
                 <div class="wheel-box">
                     <div class="wheel-arrow"></div>
                     <canvas id="canvas-wheel" width="180" height="180"></canvas>
@@ -216,16 +216,16 @@
             </div>
 
             <div class="tile" id="star-tile">
-                <div class="timer-title" id="star-title-text">Соедини точки созвездия сердца</div>
+                <div class="timer-title" id="star-title-text">соедини точки созвездия сердца</div>
                 <canvas id="constellation-canvas" width="280" height="160"></canvas>
             </div>
 
             <div class="gallery-container">
-                <div class="timer-title" style="text-align:left; margin-bottom:20px;">Несколько моментов, которые мне особенно нравятся</div>
+                <div class="timer-title" style="text-align:left; margin-bottom:20px;">несколько моментов, которые мне особенно нравятся</div>
                 <div class="gallery-scroller">
-                    <div class="photo-card"><img src="1.jpg" onerror="this.src='https://picsum.photos/400/300?random=1'"><span>Этот день я помню до сих пор</span></div>
-                    <div class="photo-card"><img src="2.jpg" onerror="this.src='https://picsum.photos/400/300?random=2'"><span>Тут ты очень красивая</span></div>
-                    <div class="photo-card"><img src="3.jpg" onerror="this.src='https://picsum.photos/400/300?random=3'"><span>Мой любимый снимок</span></div>
+                    <div class="photo-card"><img src="1.jpg" onerror="this.src='https://picsum.photos/400/300?random=1'"><span>этот день я помню до сих пор</span></div>
+                    <div class="photo-card"><img src="2.jpg" onerror="this.src='https://picsum.photos/400/300?random=2'"><span>тут ты очень красивая</span></div>
+                    <div class="photo-card"><img src="3.jpg" onerror="this.src='https://picsum.photos/400/300?random=3'"><span>мой любимый снимок</span></div>
                 </div>
             </div>
         </div>
@@ -238,15 +238,15 @@
     <script>
         const CONFIG = {
             dateRelationship: "2026-06-01T23:24:00",
-            options: ["🍕 Вкусно покушать", "☕ Уютная кофейня", "🌳 Просто прогулка", "🎬 Кино", "✨ Доверяю выбор тебе"],
-            noTexts: ["Точно нет?", "Подумай ещё 😳", "А если всё-таки да?", "Я так просто не сдамся ❤️", "А если подумать?", "Жми ДА ❤️"],
-            cuteWords: ["Люблю тебя! ❤️", "Ты невероятная ✨", "Моя вселенная 🌌", "Самая прекрасная 🥰", "Сердечко бьется ради тебя!", "Моя улыбка — ты", "Ты мое чудо 💖"],
+            options: ["🍕вкусно покушать", "☕ кофейня", "🌳 просто прогулка", "🎬 кино", "✨ обсудим лично"],
+            noTexts: ["точно нет?", "подумай ещё", "а если всё-таки да?", "я так просто не сдамся 🤍", "а если подумать?", "жди ДА 🤍"],
+            cuteWords: ["люблю тебя! 🤍", "ты невероятная ✨", "моя вселенная 🌌", "самая прекрасная 🤍", "сердечко бьется ради тебя!", "моя улыбка — ты", "ты мое чудо 🤍"],
             letters: [
-                { t: "What I Like About You", c: "Твоя искренность, заразительный смех и то, как ты умеешь слушать. В тебе сочетается невероятная нежность и сильный характер, который меня восхищает с самого первого дня." },
+                { t: "What I Like About You", c: "твоя искренность, интерес и как ты умеешь слушать. В тебе сочетается невероятная нежность и сильный характер, который меня восхищает с самого первого дня." },
                 { t: "Why I Decided to Make This Website", c: "Обычные слова быстро забываются, а код и интерактивные страницы хранят чистые эмоции. Я хотел создать для нас персональный уголок, куда ты сможешь зайти в любой момент." },
                 { t: "Why It's You", c: "Потому что с тобой весь мир вокруг стал уютным и понятным. Мне не нужно притворяться кем-то другим, ты принимаешь меня настоящим, и рядом с тобой я по-настоящему счастлив." }
             ],
-            wheelOptions: ["Кофейня ☕", "Пицца 🍕", "Парк 🌳", "Кино 🎬", "Сюрприз ✨"],
+            wheelOptions: ["кофейня ☕", "пицца 🍕", "парк 🌳", "кино 🎬", "сюрприз ✨"],
             starPoints: [{x:40,y:100}, {x:90,y:40}, {x:140,y:85}, {x:190,y:40}, {x:240,y:100}, {x:140,y:145}]
         };
 
@@ -373,13 +373,13 @@
         function submitDate() {
             const d = document.getElementById('target-date').value;
             const t = document.getElementById('target-time').value;
-            if(!app.selectedOption) { alert("Пожалуйста, выбери один из вариантов прогулки ❤️"); return; }
+            if(!app.selectedOption) { alert("пожалуйста, выбери один из вариантов прогулки 🤍"); return; }
             
             localStorage.setItem('romance_date', d);
             localStorage.setItem('romance_time', t);
             localStorage.setItem('romance_choice', app.selectedOption);
 
-            if(app.selectedOption === "✨ Доверяю выбор тебе") {
+            if(app.selectedOption === "✨ доверяю выбор тебе") {
                 document.getElementById('wheel-tile').style.display = 'flex';
                 initWheel();
             }
@@ -392,8 +392,8 @@
         function runFinalPageSequence() {
             const lines = [
                 { id: 'f-line1', delay: 400 },
-                { id: 'f-line2', delay: 1800, txt: "Я очень рад, что ты согласилась." },
-                { id: 'f-line3', delay: 3800, txt: "Я уже начинаю готовиться к нашему свиданию и сделаю всё, чтобы этот день был особенным." },
+                { id: 'f-line2', delay: 1800, txt: "я очень рад, что ты согласилась." },
+                { id: 'f-line3', delay: 3800, txt: "я уже начинаю готовиться к нашей прогулки и сделаю всё, чтобы этот день был особенным." },
                 { id: 'f-line4', delay: 5800 }
             ];
 
@@ -411,7 +411,7 @@
                         if(typeof tsParticles !== 'undefined' && tsParticles.activeLoaders && tsParticles.activeLoaders.length > 0) {
                             try {
                                 tsParticles.activeLoaders[0].setOptions({ particles: { number: { value: 110 }, move: { speed: 3 } } });
-                            } catch(e) { console.log("Контейнер частиц перестраивается..."); }
+                            } catch(e) { console.log("контейнер частиц перестраивается..."); }
                         }
                         
                         setTimeout(() => {
@@ -440,8 +440,8 @@
 
         // КНОПКА ОТКРЫТЬ СЮРПРИЗ (БОЛЬШОЕ ПИСЬМО)
         document.getElementById('gift-btn').addEventListener('click', () => {
-            const letterTxt = `Я делал этот сайт с душой, надеюс тебе понравилось и ты согласна, все это время которое мы проводили вместе я был счастлив и честно говоря забыл про старое состояние, я долго забивал голову разными вещами из прошлого, думая если бы я тогда так не поступил как бы было сейчас, но когда в мою жизнь пришла ты, я понял что лучшее меня ждёт впереди и что не нужно думать о прошлом а строить лучшее будущее, по факту ты избавила меня от мучений, от старого состояния, и я очень сильно тебе благодарен за это, и я надеюсь что на этом сайте наше будущее не закончится, потому что ты сейчас дорогой для меня человек с которым хорошо и комфортно и с которым хочется проводить все больше и больше времени и надеюсь что так и будет дальше.`;
-            showModal(`<h2>Мое признание тебе ❤️</h2><p style="margin-top:18px; line-height:1.7; text-align:justify; color:#222; font-size:0.95rem;">${letterTxt}</p><button class="btn-main" style="margin-top:25px;" onclick="closeModal()">Сохранить в памяти ✨</button>`);
+            const letterTxt = `я делал этот сайт с душой, надеюсь тебе понравилось и ты согласна, все это время которое мы проводили вместе я был счастлив и честно говоря забыл про старое состояние, я долго забивал голову разными вещами из прошлого, думая если бы я тогда так не поступил как бы было сейчас, но когда в мою жизнь пришла ты, я понял что лучшее меня ждёт впереди и что не нужно думать о прошлом а строить лучшее будущее, по факту ты избавила меня от мучений, от старого состояния, и я очень сильно тебе благодарен за это, и я надеюсь что на этом сайте наше будущее не закончится, потому что ты сейчас дорогой для меня человек с которым хорошо и комфортно и с которым хочется проводить все больше и больше времени и надеюсь что так и будет дальше.`;
+            showModal(`<h2>мое признание тебе 🤍</h2><p style="margin-top:18px; line-height:1.7; text-align:justify; color:#222; font-size:0.95rem;">${letterTxt}</p><button class="btn-main" style="margin-top:25px;" onclick="closeModal()">сохранить в памяти ✨</button>`);
             nextPage('page4');
         });
 
