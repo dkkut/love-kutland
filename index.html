@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Для моей любимой девушки ❤️</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
+    <style>
+        :root {
+            --accent: #ff85a2;
+            --accent-dark: #e06382;
+            --bg: #fff5f7;
+            --glass: rgba(255, 255, 255, 0.7);
+            --border: rgba(255, 255, 255, 0.8);
+            --shadow: rgba(255, 133, 162, 0.15);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif; background: var(--bg); color: #1d1d1f; overflow-x: hidden; min-height: 100vh; }
+
+        #tsparticles { position: fixed; width: 100%; height: 100%; z-index: 0; top: 0; left: 0; pointer-events: none; }
+
+        /* ✨ ИНТРО И ЗВЕЗДНОЕ НЕБО */
+        #loader {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #0b0b1a; color: #fff; z-index: 9999;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            transition: opacity 1s cubic-bezier(0.65, 0, 0.35, 1);
+            text-align: center; padding: 20px;
+        }
+        #loader h1 { font-weight: 300; font-size: 2rem; letter-spacing: -0.5px; margin-bottom: 15px; color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
+        #loader p { color: #86868b; font-size: 0.95rem; margin-bottom: 30px; }
+        #intro-stars { position: absolute; width: 100%; height: 100%; top: 0; left: 0; z-index: -1; }
+
+        /* АРХИТЕКТУРА SPA СТРАНИЦ */
+        .page { display: none; min-height: 100vh; width: 100%; flex-direction: column; align-items: center; justify-content: center; padding: 40px 20px; position: relative; z-index: 1; }
+        .page.active { display: flex; animation: pageIn 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+
+        .card { background: var(--glass); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); border: 1px solid var(--border); border-radius: 32px; padding: 3.5rem 3rem; box-shadow: 0 30px 70px var(--shadow); max-width: 540px; width: 100%; text-align: center; position: relative; }
+        .vpn-hint { font-size: 0.85rem; color: #86868b; margin-top: 25px; display: block; font-weight: 400; }
+
+        h1 { font-size: 2.3rem; font-weight: 700; letter-spacing: -0.5px; line-height: 1.2; margin-bottom: 1.2rem; color: #1d1d1f; }
+        p.subtitle { font-size: 1.15rem; color: #515154; line-height: 1.6; margin-bottom: 2rem; font-weight: 400; }
+
+        /* КНОПКИ */
+        button.btn-main { background: var(--accent); color: white; border: none; padding: 16px 38px; border-radius: 20px; font-size: 1.05rem; font-weight: 600; cursor: pointer; transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1); box-shadow: 0 8px 24px var(--shadow); margin: 10px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+        button.btn-main:hover { transform: translateY(-2px); background: var(--accent-dark); box-shadow: 0 12px 30px var(--shadow); }
+        #no-btn { position: absolute; background: #ffffff; color: #1d1d1f; z-index: 100; box-shadow: 0 6px 16px rgba(0,0,0,0.08); border: 1px solid rgba(0,0,0,0.05); white-space: nowrap; transition: background 0.2s; }
+
+        /* СЕТКА ВАРИАНТОВ (СТРАНИЦА 2) */
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 25px 0; width: 100%; }
+        .opt { background: rgba(255,255,255,0.6); padding: 18px; border-radius: 18px; cursor: pointer; border: 2px solid transparent; font-weight: 600; font-size: 1.05rem; transition: all 0.25s ease; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
+        .opt:hover { background: #fff; transform: translateY(-2px); box-shadow: 0 8px 15px rgba(0,0,0,0.05); }
+        .opt.active { border-color: var(--accent); background: #fff; color: var(--accent); box-shadow: 0 8px 20px var(--shadow); }
+
+        /* ВВОД ДАТЫ И ВРЕМЕНИ */
+        .datetime-container { display: flex; gap: 12px; width: 100%; margin-bottom: 10px; }
+        .input-premium { width: 100%; padding: 15px; border-radius: 16px; border: 1px solid rgba(0,0,0,0.08); background: rgba(255,255,255,0.7); font-size: 1rem; outline: none; transition: 0.3s; font-family: inherit; font-weight: 500; color: #1d1d1f; }
+        .input-premium:focus { border-color: var(--accent); background: #fff; box-shadow: 0 0 0 4px rgba(255,133,162,0.15); }
+
+        /* СТРАНИЦА 4: ДЭШБОРД */
+        .dashboard { max-width: 1100px; width: 100%; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; margin-top: 30px; }
+        .tile { background: var(--glass); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border: 1px solid var(--border); border-radius: 30px; padding: 30px; box-shadow: 0 15px 40px var(--shadow); display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 300px; position: relative; }
+        
+        /* ⏳ ТАЙМЕР */
+        .timer-title { font-size: 0.95rem; text-transform: uppercase; letter-spacing: 1.5px; color: #86868b; margin-bottom: 20px; font-weight: 600; text-align: center; width: 100%; }
+        .timer-display { display: flex; gap: 20px; justify-content: center; width: 100%; }
+        .time-unit { display: flex; flex-direction: column; align-items: center; background: rgba(255,255,255,0.5); padding: 10px 15px; border-radius: 16px; min-width: 75px; border: 1px solid rgba(255,255,255,0.5); }
+        .time-num { font-size: 2.3rem; font-weight: 800; color: #1d1d1f; }
+        .time-lbl { font-size: 0.8rem; color: #86868b; margin-top: 4px; font-weight: 500; }
+
+        /* 💌 ОТКРЫВАЮЩИЕСЯ ПИСЬМА */
+        .letters-container { display: flex; gap: 16px; width: 100%; justify-content: center; margin-top: 10px; }
+        .envelope { width: 80px; height: 60px; background: linear-gradient(135deg, var(--accent) 0%, #ff6b8b 100%); border-radius: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.7rem; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 8px 20px var(--shadow); position: relative; }
+        .envelope:hover { transform: translateY(-8px) scale(1.08); box-shadow: 0 15px 25px var(--shadow); }
+
+        /* 🎰 КОЛЕСО ФОРТУНЫ */
+        .wheel-box { position: relative; width: 180px; height: 180px; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; }
+        #canvas-wheel { width: 100%; height: 100%; border-radius: 50%; border: 4px solid #fff; box-shadow: 0 10px 25px rgba(0,0,0,0.1); transform: rotate(0deg); }
+        .wheel-arrow { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 12px solid transparent; border-right: 12px solid transparent; border-top: 18px solid var(--accent); z-index: 10; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1)); }
+
+        /* ⭐ СОЗВЕЗДИЕ */
+        #constellation-canvas { background: #070714; border-radius: 24px; cursor: crosshair; box-shadow: inset 0 0 30px rgba(0,0,0,0.8), 0 4px 15px rgba(0,0,0,0.05); border: 1px solid rgba(255,255,255,0.05); }
+
+        /* 🎬 ЛЕНТА ВОСПОМИНАНИЙ (ГАЛЕРЕЯ) */
+        .gallery-container { grid-column: 1 / -1; width: 100%; background: var(--glass); backdrop-filter: blur(25px); border: 1px solid var(--border); border-radius: 32px; padding: 35px; box-shadow: 0 15px 40px var(--shadow); }
+        .gallery-scroller { display: flex; gap: 25px; overflow-x: auto; padding: 10px 5px 20px 5px; scroll-snap-type: x mandatory; scrollbar-width: none; }
+        .gallery-scroller::-webkit-scrollbar { display: none; }
+        
+        .photo-card { flex: 0 0 300px; scroll-snap-align: start; background: #fff; padding: 14px; border-radius: 24px; box-shadow: 0 12px 30px rgba(0,0,0,0.04); text-align: center; transform: translateZ(0); transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1); cursor: grab; }
+        .photo-card:hover { transform: translateY(-5px); }
+        .photo-card img { width: 100%; height: 220px; object-fit: cover; border-radius: 18px; margin-bottom: 14px; pointer-events: none; }
+        .photo-card span { font-size: 0.95rem; color: #444; font-weight: 600; display: block; padding: 0 5px; }
+
+        /* 🎵 МИНИ-ПЛЕЕР С ВИНИЛОМ */
+        .player { position: fixed; bottom: 25px; left: 25px; background: rgba(255,255,255,0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid var(--border); padding: 14px 22px; border-radius: 24px; display: flex; align-items: center; gap: 16px; box-shadow: 0 12px 35px rgba(0,0,0,0.06); z-index: 1000; max-width: 310px; width: calc(100% - 50px); }
+        .vinyl-wrap { position: relative; width: 48px; height: 48px; flex-shrink: 0; }
+        .vinyl { width: 100%; height: 100%; border-radius: 50%; background: repeating-radial-gradient(#222, #222 2px, #111 3px, #222 4px); border: 2px solid #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.15); display: flex; align-items: center; justify-content: center; animation: spin 4s linear infinite; animation-play-state: paused; }
+        .vinyl::after { content: ''; width: 14px; height: 14px; background: var(--bg); border-radius: 50%; border: 1px solid rgba(0,0,0,0.1); }
+        .vinyl.playing { animation-play-state: running; }
+        .player-info { flex: 1; min-width: 0; }
+        .track-title { font-size: 0.9rem; font-weight: 700; color: #1d1d1f; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .track-artist { font-size: 0.75rem; color: #86868b; margin-top: 2px; font-weight: 500; }
+        .progress-bar { width: 100%; height: 5px; background: rgba(0,0,0,0.06); border-radius: 3px; margin-top: 8px; position: relative; cursor: pointer; }
+        .progress-fill { height: 100%; background: var(--accent); width: 0%; border-radius: 3px; }
+        .play-btn { background: none; border: none; cursor: pointer; font-size: 1.25rem; color: #1d1d1f; display: flex; align-items: center; justify-content: center; padding: 4px; flex-shrink: 0; transition: transform 0.2s; }
+        .play-btn:active { transform: scale(0.9); }
+
+        /* ПРЕМИУМ МОДАЛЬНОЕ ОКНО ДЛЯ ПИСЕМ */
+        .letter-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(11,11,26,0.35); z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); }
+        .letter-content { background: #fff; padding: 40px; border-radius: 28px; max-width: 480px; width: 91%; text-align: center; box-shadow: 0 30px 60px rgba(0,0,0,0.15); border: 1px solid rgba(255,255,255,0.6); animation: pageIn 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+
+        /* ВСПЛЫВАЮЩИЕ СЛОВА */
+        .floating-word { position: fixed; pointer-events: none; color: var(--accent); font-weight: 700; font-size: 1.2rem; animation: floatUp 1.8s cubic-bezier(0.25, 1, 0.5, 1) forwards; z-index: 9999; text-shadow: 0 4px 12px rgba(255,133,162,0.25); }
+
+        @keyframes pulse { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
+        @keyframes pageIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes floatUp { 0% { opacity: 0; transform: translateY(0) scale(0.8); } 15% { opacity: 1; transform: translateY(-15px) scale(1.1); } 100% { opacity: 0; transform: translateY(-90px) scale(1); } }
+    </style>
+</head>
+<body>
+
+    <div id="loader">
+        <canvas id="intro-stars"></canvas>
+        <h1 id="loader-text">Загружаю самые важные слова…</h1>
+        <p>Если анимация застыла или не обновляется фон, включите VPN 🛡</p>
+    </div>
+
+    <div id="tsparticles"></div>
+
+    <div class="player">
+        <button class="play-btn" id="master-play">▶</button>
+        <div class="vinyl-wrap"><div class="vinyl" id="player-vinyl"></div></div>
+        <div class="player-info">
+            <div class="track-title">Романтическая мелодия</div>
+            <div class="track-artist">Специально для тебя</div>
+            <div class="progress-bar" id="p-bar"><div class="progress-fill" id="p-fill"></div></div>
+        </div>
+    </div>
+
+    <div id="page1" class="page active">
+        <div class="card" id="main-confession-card">
+            <h1 id="p1-title">Мне нужно сказать тебе кое-что важное ❤️</h1>
+            <p class="subtitle" id="p1-sub">Каждый день рядом с тобой становится лучше, и я больше не хочу скрывать свои чувства.</p>
+            
+            <div id="p1-main-text" style="display:none;">
+                <p class="subtitle" style="font-size:1.1rem; margin-bottom:2rem;">Ты очень особенный человек для меня. Мне нравится твоя улыбка, твой характер, наши разговоры и время, проведённое вместе. Поэтому я хочу задать тебе один вопрос...</p>
+                <h1 style="font-size:2rem; margin-bottom:2rem;">Ты будешь моей девушкой? ❤️</h1>
+                <div style="display:inline-block; position:relative; width:100%; min-height:80px; margin-top:10px;">
+                    <button class="btn-main" onclick="handleYes()">Да ❤️</button>
+                    <button class="btn-main" id="no-btn">Нет 🙈</button>
+                </div>
+            </div>
+            <span class="vpn-hint">Если анимации или фон работают нестабильно — активируйте VPN.</span>
+        </div>
+    </div>
+
+    <div id="page2" class="page">
+        <div class="card">
+            <h1>Тогда позволь пригласить тебя на свидание ❤️</h1>
+            <p class="subtitle" style="margin-bottom:1.5rem;">Выбери удобный вариант, а всё остальное я организую.</p>
+            
+            <div class="datetime-container">
+                <input type="date" id="target-date" class="input-premium">
+                <input type="time" id="target-time" class="input-premium" value="19:00">
+            </div>
+
+            <div class="grid" id="options-holder"></div>
+            <button class="btn-main" style="width:100%; margin:10px 0 0 0;" onclick="submitDate()">Подтвердить свидание ❤️</button>
+        </div>
+    </div>
+
+    <div id="page3" class="page">
+        <div class="card">
+            <h1 id="f-line1" style="opacity:0;">Спасибо ❤️</h1>
+            <p class="subtitle" id="f-line2" style="opacity:0; margin-bottom:1.2rem;"></p>
+            <p class="subtitle" id="f-line3" style="opacity:0; margin-bottom:1.5rem;"></p>
+            <h1 id="f-line4" style="opacity:0; font-size:2.8rem; color:var(--accent); text-shadow: 0 0 20px rgba(255,133,162,0.4);">Я тебя люблю ❤️</h1>
+            <button class="btn-main" id="gift-btn" style="display:none; width:100%; margin-top:25px;">Открыть сюрприз 🎁</button>
+        </div>
+    </div>
+
+    <div id="page4" class="page" style="height:auto; min-height:100vh;">
+        <h1 style="text-align:center; color:#1d1d1f; margin-bottom:5px;">Наше пространство ✨</h1>
+        <p class="subtitle" style="text-align:center; margin-bottom:30px; font-size:1rem; color:#86868b;">Нажимай на пустые зоны экрана, чтобы оставлять милые слова</p>
+        
+        <div class="dashboard">
+            <div class="tile">
+                <div class="timer-title">Мы знакомы уже</div>
+                <div class="timer-display">
+                    <div class="time-unit"><span class="time-num" id="t-days">00</span><span class="time-lbl">Дней</span></div>
+                    <div class="time-unit"><span class="time-num" id="t-hours">00</span><span class="time-lbl">Часов</span></div>
+                    <div class="time-unit"><span class="time-num" id="t-mins">00</span><span class="time-lbl">Минут</span></div>
+                </div>
+            </div>
+
+            <div class="tile">
+                <div class="timer-title" style="margin-bottom:25px;">Записки для тебя</div>
+                <div class="letters-container">
+                    <div class="envelope" onclick="openLetter(0)">💌</div>
+                    <div class="envelope" onclick="openLetter(1)">💌</div>
+                    <div class="envelope" onclick="openLetter(2)">💌</div>
+                </div>
+            </div>
+
+            <div class="tile" id="wheel-tile" style="display:none;">
+                <div class="timer-title">Колесо выбора прогулки</div>
+                <div class="wheel-box">
+                    <div class="wheel-arrow"></div>
+                    <canvas id="canvas-wheel" width="180" height="180"></canvas>
+                </div>
+                <button class="btn-main" style="padding:12px 24px; font-size:0.95rem; margin:0;" onclick="spinWheel()">Крутить ✨</button>
+            </div>
+
+            <div class="tile" id="star-tile">
+                <div class="timer-title" id="star-title-text">Соедини точки созвездия сердца</div>
+                <canvas id="constellation-canvas" width="280" height="160"></canvas>
+            </div>
+
+            <div class="gallery-container">
+                <div class="timer-title" style="text-align:left; margin-bottom:20px;">Несколько моментов, которые мне особенно нравятся</div>
+                <div class="gallery-scroller">
+                    <div class="photo-card"><img src="1.jpg" onerror="this.src='https://picsum.photos/400/300?random=1'"><span>Этот день я помню до сих пор</span></div>
+                    <div class="photo-card"><img src="2.jpg" onerror="this.src='https://picsum.photos/400/300?random=2'"><span>Тут ты очень красивая</span></div>
+                    <div class="photo-card"><img src="3.jpg" onerror="this.src='https://picsum.photos/400/300?random=3'"><span>Мой любимый снимок</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="letter-modal" id="modal-container">
+        <div class="letter-content" id="modal-inner"></div>
+    </div>
+
+    <script>
+        const CONFIG = {
+            dateRelationship: "2026-06-01T23:24:00",
+            options: ["🍕 Вкусно покушать", "☕ Уютная кофейня", "🌳 Просто прогулка", "🎬 Кино", "✨ Доверяю выбор тебе"],
+            noTexts: ["Точно нет?", "Подумай ещё 😳", "А если всё-таки да?", "Я так просто не сдамся ❤️", "А если подумать?", "Жми ДА ❤️"],
+            cuteWords: ["Люблю тебя! ❤️", "Ты невероятная ✨", "Моя вселенная 🌌", "Самая прекрасная 🥰", "Сердечко бьется ради тебя!", "Моя улыбка — ты", "Ты мое чудо 💖"],
+            letters: [
+                { t: "What I Like About You", c: "Твоя искренность, заразительный смех и то, как ты умеешь слушать. В тебе сочетается невероятная нежность и сильный характер, который меня восхищает с самого первого дня." },
+                { t: "Why I Decided to Make This Website", c: "Обычные слова быстро забываются, а код и интерактивные страницы хранят чистые эмоции. Я хотел создать для нас персональный уголок, куда ты сможешь зайти в любой момент." },
+                { t: "Why It's You", c: "Потому что с тобой весь мир вокруг стал уютным и понятным. Мне не нужно притворяться кем-то другим, ты принимаешь меня настоящим, и рядом с тобой я по-настоящему счастлив." }
+            ],
+            wheelOptions: ["Кофейня ☕", "Пицца 🍕", "Парк 🌳", "Кино 🎬", "Сюрприз ✨"],
+            starPoints: [{x:40,y:100}, {x:90,y:40}, {x:140,y:85}, {x:190,y:40}, {x:240,y:100}, {x:140,y:145}]
+        };
+
+        let app = {
+            audio: new Audio('music.mp3'),
+            selectedOption: "",
+            clickCount: 0,
+            starConnections: [],
+            starComplete: false,
+            wheelIsSpinning: false
+        };
+        app.audio.loop = true;
+
+        // Если локальной аудиозаписи нет, ставим красивый резервный фоновый эмбиент из сети
+        app.audio.addEventListener('error', function() {
+            console.log("Локальный файл музыки не найден. Переключаюсь на сетевой резерв.");
+            app.audio.src = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3";
+        });
+
+        // 🌌 ИНТРО ЗВЕЗДНОЕ НЕБО
+        function initIntroStars() {
+            const canvas = document.getElementById('intro-stars');
+            if(!canvas) return;
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            let stars = [];
+            for(let i=0; i<120; i++) {
+                stars.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, r: Math.random()*1.5, alpha: Math.random() });
+            }
+            function animate() {
+                if(!document.getElementById('loader')) return;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = '#0b0b1a';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                stars.forEach(s => {
+                    s.alpha += (Math.random() - 0.5) * 0.05;
+                    if(s.alpha < 0) s.alpha = 0; if(s.alpha > 1) s.alpha = 1;
+                    ctx.fillStyle = `rgba(255,255,255,${s.alpha})`;
+                    ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI*2); ctx.fill();
+                });
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            initIntroStars();
+            
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('target-date').setAttribute('min', today);
+            document.getElementById('target-date').value = today;
+
+            setTimeout(() => {
+                const loader = document.getElementById('loader');
+                if(loader) {
+                    loader.style.opacity = '0';
+                    setTimeout(() => {
+                        loader.remove();
+                        setTimeout(() => {
+                            document.getElementById('p1-title').style.animation = 'pageIn 0.8s ease forwards';
+                            document.getElementById('p1-sub').style.animation = 'pageIn 0.8s ease forwards';
+                            setTimeout(() => {
+                                document.getElementById('p1-title').style.display = 'none';
+                                document.getElementById('p1-sub').style.display = 'none';
+                                const mainContent = document.getElementById('p1-main-text');
+                                mainContent.style.display = 'block';
+                                mainContent.style.animation = 'pageIn 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards';
+                            }, 3500);
+                        }, 200);
+                    }, 1000);
+                }
+            }, 3000);
+
+            initParticles();
+            initConstellationCanvas();
+        });
+
+        function nextPage(targetId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(targetId).classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // КНОПКА "НЕТ"
+        const noBtn = document.getElementById('no-btn');
+        function moveNoButton() {
+            const pad = 30;
+            let newX = Math.random() * (window.innerWidth - noBtn.offsetWidth - pad*2) + pad;
+            let newY = Math.random() * (window.innerHeight - noBtn.offsetHeight - pad*2) + pad;
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = `${newX}px`;
+            noBtn.style.top = `${newY}px`;
+            noBtn.innerText = CONFIG.noTexts[Math.floor(Math.random() * CONFIG.noTexts.length)];
+        }
+        noBtn.addEventListener('mouseover', moveNoButton);
+        noBtn.addEventListener('touchstart', (e) => { e.preventDefault(); moveNoButton(); });
+
+        // НАЖАТИЕ "ДА"
+        function handleYes() {
+            confetti({ particleCount: 160, spread: 80, origin: { y: 0.6 } });
+            nextPage('page2');
+            renderOptions();
+            tryPlayMusic();
+        }
+
+        function renderOptions() {
+            const holder = document.getElementById('options-holder');
+            holder.innerHTML = '';
+            CONFIG.options.forEach(opt => {
+                const item = document.createElement('div');
+                item.className = 'opt';
+                item.innerText = opt;
+                item.onclick = () => {
+                    document.querySelectorAll('.opt').forEach(el => el.classList.remove('active'));
+                    item.classList.add('active');
+                    app.selectedOption = opt;
+                };
+                holder.appendChild(item);
+            });
+        }
+
+        // ПОДТВЕРЖДЕНИЕ СВЕДАНИЯ
+        function submitDate() {
+            const d = document.getElementById('target-date').value;
+            const t = document.getElementById('target-time').value;
+            if(!app.selectedOption) { alert("Пожалуйста, выбери один из вариантов прогулки ❤️"); return; }
+            
+            localStorage.setItem('romance_date', d);
+            localStorage.setItem('romance_time', t);
+            localStorage.setItem('romance_choice', app.selectedOption);
+
+            if(app.selectedOption === "✨ Доверяю выбор тебе") {
+                document.getElementById('wheel-tile').style.display = 'flex';
+                initWheel();
+            }
+
+            nextPage('page3');
+            runFinalPageSequence();
+        }
+
+        // СЦЕНАРИЙ ТЕКСТОВ НА 3 СЛАЙДЕ
+        function runFinalPageSequence() {
+            const lines = [
+                { id: 'f-line1', delay: 400 },
+                { id: 'f-line2', delay: 1800, txt: "Я очень рад, что ты согласилась." },
+                { id: 'f-line3', delay: 3800, txt: "Я уже начинаю готовиться к нашему свиданию и сделаю всё, чтобы этот день был особенным." },
+                { id: 'f-line4', delay: 5800 }
+            ];
+
+            lines.forEach(line => {
+                setTimeout(() => {
+                    const el = document.getElementById(line.id);
+                    if(!el) return;
+                    if(line.txt) el.innerText = line.txt;
+                    el.style.opacity = '1';
+                    el.style.transition = 'opacity 1s ease';
+                    if(line.id === 'f-line4') {
+                        confetti({ particleCount: 250, spread: 100 });
+                        
+                        // Безопасное обновление частиц фона (устранена ошибка undefined)
+                        if(typeof tsParticles !== 'undefined' && tsParticles.activeLoaders && tsParticles.activeLoaders.length > 0) {
+                            try {
+                                tsParticles.activeLoaders[0].setOptions({ particles: { number: { value: 110 }, move: { speed: 3 } } });
+                            } catch(e) { console.log("Контейнер частиц перестраивается..."); }
+                        }
+                        
+                        setTimeout(() => {
+                            const btn = document.getElementById('gift-btn');
+                            btn.style.display = 'inline-flex';
+                            btn.style.animation = 'pageIn 0.6s ease forwards';
+                        }, 2000);
+                    }
+                }, line.delay);
+            });
+        }
+
+        // РАСЧЕТ ТАЙМЕРА ЗНАКОМСТВА
+        function updateTimer() {
+            const birth = new Date(CONFIG.dateRelationship);
+            const now = new Date();
+            const diff = now - birth;
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const minutes = Math.floor((diff / (1000 * 60)) % 60);
+            document.getElementById('t-days').innerText = String(days).padStart(2, '0');
+            document.getElementById('t-hours').innerText = String(hours).padStart(2, '0');
+            document.getElementById('t-mins').innerText = String(minutes).padStart(2, '0');
+        }
+        setInterval(updateTimer, 1000);
+
+        // КНОПКА ОТКРЫТЬ СЮРПРИЗ (БОЛЬШОЕ ПИСЬМО)
+        document.getElementById('gift-btn').addEventListener('click', () => {
+            const letterTxt = `Я делал этот сайт с душой, надеюс тебе понравилось и ты согласна, все это время которое мы проводили вместе я был счастлив и честно говоря забыл про старое состояние, я долго забивал голову разными вещами из прошлого, думая если бы я тогда так не поступил как бы было сейчас, но когда в мою жизнь пришла ты, я понял что лучшее меня ждёт впереди и что не нужно думать о прошлом а строить лучшее будущее, по факту ты избавила меня от мучений, от старого состояния, и я очень сильно тебе благодарен за это, и я надеюсь что на этом сайте наше будущее не закончится, потому что ты сейчас дорогой для меня человек с которым хорошо и комфортно и с которым хочется проводить все больше и больше времени и надеюсь что так и будет дальше.`;
+            showModal(`<h2>Мое признание тебе ❤️</h2><p style="margin-top:18px; line-height:1.7; text-align:justify; color:#222; font-size:0.95rem;">${letterTxt}</p><button class="btn-main" style="margin-top:25px;" onclick="closeModal()">Сохранить в памяти ✨</button>`);
+            nextPage('page4');
+        });
+
+        // ВСПЛЫВАЮЩИЕ ЗАПИСКИ
+        function openLetter(index) {
+            const data = CONFIG.letters[index];
+            showModal(`<h2>${data.t}</h2><p style="margin-top:15px; line-height:1.6; color:#444; font-size:1rem;">${data.c}</p><button class="btn-main" style="margin-top:20px; padding:10px 25px;" onclick="closeModal()">Закрыть</button>`);
+        }
+
+        function showModal(html) {
+            const container = document.getElementById('modal-container');
+            document.getElementById('modal-inner').innerHTML = html;
+            container.style.display = 'flex';
+        }
+        function closeModal() { document.getElementById('modal-container').style.display = 'none'; }
+
+        // КОЛЕСО ФОРТУНЫ
+        let wCanvas = document.getElementById('canvas-wheel');
+        let wCtx = wCanvas.getContext('2d');
+        function initWheel() {
+            let colors = ["#ff85a2", "#ffb3c6", "#ff85a2", "#ffb3c6", "#ffe5ec"];
+            let segmentArc = Math.PI / (CONFIG.wheelOptions.length / 2);
+            for (let i = 0; i < CONFIG.wheelOptions.length; i++) {
+                wCtx.fillStyle = colors[i];
+                wCtx.beginPath(); wCtx.moveTo(90, 90);
+                wCtx.arc(90, 90, 90, i * segmentArc, (i + 1) * segmentArc);
+                wCtx.fill(); wCtx.save();
+                wCtx.fillStyle = "#fff"; wCtx.translate(90, 90);
+                wCtx.rotate(i * segmentArc + segmentArc / 2);
+                wCtx.font = "bold 10px sans-serif";
+                wCtx.fillText(CONFIG.wheelOptions[i].split(' ')[0], 40, 4);
+                wCtx.restore();
+            }
+        }
+        function spinWheel() {
+            if(app.wheelIsSpinning) return;
+            app.wheelIsSpinning = true;
+            let optionsCount = CONFIG.wheelOptions.length;
+            let winnerIndex = Math.floor(Math.random() * optionsCount);
+            let finalDegrees = 1800 + (winnerIndex * (360 / optionsCount));
+            wCanvas.style.transition = `transform 4s cubic-bezier(0.15, 0.99, 0.35, 1)`;
+            wCanvas.style.transform = `rotate(-${finalDegrees}deg)`;
+            setTimeout(() => {
+                confetti({particleCount: 60, spread: 60});
+                alert(`Колесо фортуны выбрало идеальное место: ${CONFIG.wheelOptions[winnerIndex]}! ✨`);
+                localStorage.setItem('romance_choice', CONFIG.wheelOptions[winnerIndex]);
+                app.wheelIsSpinning = false;
+            }, 4200);
+        }
+
+        // ⭐ СОЗВЕЗДИЕ
+        let sCanvas = document.getElementById('constellation-canvas');
+        let sCtx = sCanvas.getContext('2d');
+        function initConstellationCanvas() {
+            renderStarsGeometry();
+            sCanvas.addEventListener('click', (e) => {
+                if(app.starComplete) return;
+                let r = sCanvas.getBoundingClientRect();
+                let x = e.clientX - r.left; let y = e.clientY - r.top;
+                CONFIG.starPoints.forEach((pt, idx) => {
+                    if(Math.hypot(pt.x - x, pt.y - y) < 14 && !app.starConnections.includes(idx)) {
+                        app.starConnections.push(idx);
+                        renderStarsGeometry();
+                        if(app.starConnections.length === CONFIG.starPoints.length) {
+                            app.starComplete = true;
+                            document.getElementById('star-title-text').innerText = "Не зря все звёзды сложились именно так.";
+                            drawFinalConstellationHeart();
+                        }
+                    }
+                });
+            });
+        }
+        function renderStarsGeometry() {
+            sCtx.clearRect(0,0,280,160);
+            if(app.starConnections.length > 1) {
+                sCtx.beginPath(); sCtx.strokeStyle = "rgba(255,133,162,0.85)"; sCtx.lineWidth = 2;
+                sCtx.moveTo(CONFIG.starPoints[app.starConnections[0]].x, CONFIG.starPoints[app.starConnections[0]].y);
+                for(let i=1; i<app.starConnections.length; i++) {
+                    sCtx.lineTo(CONFIG.starPoints[app.starConnections[i]].x, CONFIG.starPoints[app.starConnections[i]].y);
+                }
+                sCtx.stroke();
+            }
+            CONFIG.starPoints.forEach((pt, i) => {
+                sCtx.beginPath(); sCtx.arc(pt.x, pt.y, app.starConnections.includes(i) ? 6 : 4, 0, Math.PI*2);
+                sCtx.fillStyle = app.starConnections.includes(i) ? "var(--accent)" : "#ffffff";
+                sCtx.shadowBlur = app.starConnections.includes(i) ? 10 : 0;
+                sCtx.shadowColor = "var(--accent)"; sCtx.fill(); sCtx.shadowBlur = 0;
+            });
+        }
+        function drawFinalConstellationHeart() {
+            sCtx.beginPath(); sCtx.fillStyle = "rgba(255,133,162,0.35)";
+            sCtx.moveTo(140, 75); sCtx.bezierCurveTo(140, 72, 135, 55, 115, 55);
+            sCtx.bezierCurveTo(95, 55, 95, 80, 95, 80); sCtx.bezierCurveTo(95, 100, 115, 120, 140, 138);
+            sCtx.bezierCurveTo(165, 120, 185, 100, 185, 80); sCtx.bezierCurveTo(185, 80, 185, 55, 165, 55);
+            sCtx.bezierCurveTo(150, 55, 140, 72, 140, 75); sCtx.fill();
+            confetti({particleCount: 40, spread: 50});
+        }
+
+        // КЛИК ПО ЭКРАНУ (ПАСХАЛКА)
+        document.body.addEventListener('click', (e) => {
+            if(e.target.closest('.card') || e.target.closest('.dashboard') || e.target.closest('.player') || e.target.closest('.letter-modal')) return;
+            const word = document.createElement('div');
+            word.className = 'floating-word';
+            word.innerText = CONFIG.cuteWords[Math.floor(Math.random() * CONFIG.cuteWords.length)];
+            word.style.left = `${e.clientX}px`; word.style.top = `${e.clientY}px`;
+            document.body.appendChild(word);
+            setTimeout(() => word.remove(), 1800);
+        });
+
+        // ПЛЕЕР
+        const playBtn = document.getElementById('master-play');
+        const vinyl = document.getElementById('player-vinyl');
+        const fBar = document.getElementById('p-fill');
+        
+        function tryPlayMusic() {
+            app.audio.play().then(() => { playBtn.innerText = "⏸"; vinyl.classList.add('playing'); })
+            .catch(() => console.log("Автоплей ограничен браузером. Ожидаем первого клика пользователя на странице."));
+        }
+        
+        playBtn.addEventListener('click', () => {
+            if(app.audio.paused) { app.audio.play(); playBtn.innerText = "⏸"; vinyl.classList.add('playing'); }
+            else { app.audio.pause(); playBtn.innerText = "▶"; vinyl.classList.remove('playing'); }
+        });
+        app.audio.addEventListener('timeupdate', () => {
+            if(app.audio.duration) {
+                fBar.style.width = `${(app.audio.currentTime / app.audio.duration) * 100}%`;
+            }
+        });
+        document.getElementById('p-bar').addEventListener('click', (e) => {
+            if(app.audio.duration) {
+                app.audio.currentTime = (e.offsetX / e.currentTarget.offsetWidth) * app.audio.duration;
+            }
+        });
+
+        // ЧАСТИЦЫ БЕЗ ОШИБКИ КОРРЕКТНОСТИ МАРШРУТИЗАЦИИ С ФАЙЛА
+        function initParticles() {
+            if(typeof tsParticles !== 'undefined') {
+                tsParticles.load("tsparticles", {
+                    particles: {
+                        number: { value: 35, density: { enable: true, value_area: 800 } },
+                        shape: { type: "heart" },
+                        color: { value: "#ff85a2" },
+                        opacity: { value: 0.45, random: true },
+                        size: { value: 14, random: true },
+                        move: { enable: true, speed: 1.2, direction: "top", out_mode: "out" }
+                    }
+                });
+            }
+        }
+    </script>
+</body>
+</html>
